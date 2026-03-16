@@ -47,37 +47,52 @@ int verifyhomogeneity(bool *ishomogeneouspointer){
     }
 }
 
-int pivot(float *p, int column, int N){
+int pivot(float *p, int N){
 
-    printf("pivô → [%.2f]", *(p + (column * N)));
-    int validcolumn = -1;
+    printf("início da memória → [%p] \n", p);
 
-    if(*(p + (column * N)) == 0){
-        printf(" → pivô inválido!");
+    //transformando de linear pra matriz
 
-        //quando o pivô é inválido, deve ir buscar uma linha com pivô válido;
+    float A[N][N];
 
-        for(int i = column + 1; i < N; i++){
-            
-            if(p[i * N + column] != 0){
-                printf(" → linha → %d válida", i);
-                validcolumn = i;
-                break;
-            }
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+
+            A[i][j] = *(p + i*N + j);
+
         }
-
-        if(validcolumn != -1){
-
-            printf(" → a coluna válida é → %d", validcolumn);
-            for(int i = 0; i < N; i++){
-                printf(" [%.2f]", p[validcolumn * N + i]);
-            }
-        }
-
-        printf("\n nenhuma linha válida!");
-        return 0;
     }
 
+    //exibindo matriz
+
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+
+            if(i != j){
+                printf("[%.2f]", A[i][j]);
+            }
+            else{
+                printf("\033[32m[%.2f]\033[0m", A[i][j]);
+            }
+
+        }
+
+        printf("\n");
+    }
+
+    for(int i = 0; i < N; i++){
+        
+        if(A[i][i] != 0){
+
+            printf("\033[32m[%.2f] → pivô válido \033[0m\n", A[i][i]);
+
+        }
+        else{ 
+
+            printf("\033[31m[%.2f] → pivô inválido \033[0m\n", A[i][i]);
+        }
+        
+    }
 }
 
 int main(void){
@@ -96,8 +111,11 @@ int main(void){
     // printf("[A] → %b \n", ishomogeneous);
     verifyhomogeneity(ishomogeneouspointer);
 
-    for(int i = 0; i < N; i++){
-        pivot(p, i, N);
-        printf("\n");
-    }
+    // for(int i = 0; i < N; i++){
+    //     pivot(p, N, i);
+    //     printf("\n");
+    // }
+
+    pivot(p, N);
+
 }
