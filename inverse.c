@@ -93,12 +93,13 @@ int main(){
 		//DIVISAO DA MATRIZ IDENTIDADE
 		
 		I[0][i] /= pivo;
+
         }
 
         printf("\n[E2]: DIVISAO DA LINHA L1 POR %.2f\n", pivo);
 
         exibirmatriz(A);
-	exibirmatriz(I);
+	    exibirmatriz(I);
 
     }
 

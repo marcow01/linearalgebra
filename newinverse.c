@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define RESET "\033[0m"
 
 // →
 
@@ -49,7 +53,8 @@ int verifyhomogeneity(bool *ishomogeneouspointer){
 
 int pivot(float *p, int N){
 
-    printf("início da memória → [%p] \n", p);
+    // printf("início da memória → [%p] \n", p);
+    printf("\n");
 
     //transformando de linear pra matriz
 
@@ -68,11 +73,21 @@ int pivot(float *p, int N){
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
 
-            if(i != j){
-                printf("[%.2f]", A[i][j]);
+            if(i == j){
+
+                if(A[i][j] != 0){
+
+                    printf(GREEN "[%.2f]" RESET, A[i][j]);
+
+                }
+                else{ 
+
+                    printf(RED"[%.2f]" RESET, A[i][j]);
+                }
+
             }
             else{
-                printf("\033[32m[%.2f]\033[0m", A[i][j]);
+                printf("[%.2f]", A[i][j]);
             }
 
         }
@@ -80,19 +95,74 @@ int pivot(float *p, int N){
         printf("\n");
     }
 
+    //fim da exibicao da matriz
+
+    //verificando se o pivô é válido
+
+    printf("\n");
+
     for(int i = 0; i < N; i++){
         
-        if(A[i][i] != 0){
+        if(A[i][i] == 0){}
 
-            printf("\033[32m[%.2f] → pivô válido \033[0m\n", A[i][i]);
-
-        }
         else{ 
 
-            printf("\033[31m[%.2f] → pivô inválido \033[0m\n", A[i][i]);
+            float pivot = A[i][i];
+
+            //deixou o pivô unitário
+
+            for(int j = 0; j < N; j++){
+
+                A[i][j] /= pivot;
+
+                printf("DIVISAO DA LINHA %d, ITEM %d POR %.2f \n", i + 1, j, pivot);
+
+            }
+
+            //zerar os elementos abaixo da linha
+
+            for(int k = 0; k < N; k++){
+
+                if(k == i) continue;
+
+                float factor = A[k][i];
+
+                for(int j = 0; j < N; j++){
+                    A[k][j] -= factor * A[i][j];
+                }
+
+            }
+
+
         }
-        
+
     }
+
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+
+            if(i == j){
+
+                if(A[i][j] != 0){
+
+                    printf(GREEN "[%.2f]" RESET, A[i][j]);
+
+                }
+                else{ 
+
+                    printf(RED"[%.2f]" RESET, A[i][j]);
+                }
+
+            }
+            else{
+                printf("[%.2f]", A[i][j]);
+            }
+
+        }
+
+        printf("\n");
+    }
+
 }
 
 int main(void){
@@ -108,7 +178,6 @@ int main(void){
     float *p = &A[0][0];
     receive(p, N, ishomogeneouspointer);
     show(p, N);
-    // printf("[A] → %b \n", ishomogeneous);
     verifyhomogeneity(ishomogeneouspointer);
 
     // for(int i = 0; i < N; i++){
